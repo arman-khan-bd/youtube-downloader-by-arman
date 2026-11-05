@@ -117,10 +117,10 @@ public class DownloadDialog extends BottomSheetDialogFragment {
         View.OnClickListener toggleStorageListener = v -> {
             if (getContext() == null) return;
             SettingsManager sm = SettingsManager.getInstance(getContext());
-            if (sm.getStorageLocation() == SettingsManager.StorageLocation.INTERNAL) {
+            if (sm.getStorageLocation() == SettingsManager.StorageLocation.PHONE_INTERNAL) {
                 sm.setStorageLocation(SettingsManager.StorageLocation.SD_CARD);
             } else {
-                sm.setStorageLocation(SettingsManager.StorageLocation.INTERNAL);
+                sm.setStorageLocation(SettingsManager.StorageLocation.PHONE_INTERNAL);
             }
             displayStorageInfo();
         };
