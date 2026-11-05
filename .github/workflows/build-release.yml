@@ -61,7 +61,7 @@ jobs:
         with:
           gradle-version: '8.2'
 
-      - name: Decode Release Keystore (Optional)
+      - name: Prepare Signing Keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -70,13 +70,19 @@ jobs:
         run: |
           if [ -n "$KEYSTORE_BASE64" ]; then
             echo "$KEYSTORE_BASE64" | base64 -d > app/release.keystore
-            echo "KEYSTORE_FILE=app/release.keystore" >> $GITHUB_ENV
+            echo "KEYSTORE_FILE=release.keystore" >> $GITHUB_ENV
             echo "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> $GITHUB_ENV
             echo "KEY_ALIAS=$KEY_ALIAS" >> $GITHUB_ENV
             echo "KEY_PASSWORD=$KEY_PASSWORD" >> $GITHUB_ENV
             echo "Release keystore decoded successfully."
           else
-            echo "No custom release keystore provided. Using fallback signing."
+            echo "No custom release keystore provided. Generating signing keystore..."
+            keytool -genkeypair -v -keystore app/release.keystore -alias tubepipe -keyalg RSA -keysize 2048 -validity 10000 -storepass android -keypass android -dname "CN=TubePipe, OU=TubePipe, O=TubePipe, L=Unknown, ST=Unknown, C=US"
+            echo "KEYSTORE_FILE=release.keystore" >> $GITHUB_ENV
+            echo "KEYSTORE_PASSWORD=android" >> $GITHUB_ENV
+            echo "KEY_ALIAS=tubepipe" >> $GITHUB_ENV
+            echo "KEY_PASSWORD=android" >> $GITHUB_ENV
+            echo "Generated fallback release keystore successfully."
           fi
 
       - name: Build Release APK

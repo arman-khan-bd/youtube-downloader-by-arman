@@ -22,21 +22,30 @@ android {
 
     signingConfigs {
         release {
-            if (System.getenv("KEYSTORE_FILE") != null && new File(System.getenv("KEYSTORE_FILE")).exists()) {
-                storeFile file(System.getenv("KEYSTORE_FILE"))
-                storePassword System.getenv("KEYSTORE_PASSWORD")
-                keyAlias System.getenv("KEY_ALIAS")
-                keyPassword System.getenv("KEY_PASSWORD")
-            } else {
-                // Fallback to debug signature so CI always outputs an installable signed APK
-                initWith debug
+            def ksPath = System.getenv("KEYSTORE_FILE") ?: "release.keystore"
+            def ksFile = file(ksPath)
+            if (!ksFile.exists()) {
+                ksFile = rootProject.file(ksPath)
+            }
+            if (ksFile.exists()) {
+                storeFile ksFile
+                storePassword System.getenv("KEYSTORE_PASSWORD") ?: "android"
+                keyAlias System.getenv("KEY_ALIAS") ?: "tubepipe"
+                keyPassword System.getenv("KEY_PASSWORD") ?: "android"
             }
         }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            def ksPath = System.getenv("KEYSTORE_FILE") ?: "release.keystore"
+            def ksFile = file(ksPath)
+            if (!ksFile.exists()) {
+                ksFile = rootProject.file(ksPath)
+            }
+            if (ksFile.exists()) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
