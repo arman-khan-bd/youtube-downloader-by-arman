@@ -1,0 +1,36 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base YouTube Dark Theme -->
+    <style name="Theme.TubePipe" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand colors -->
+        <item name="colorPrimary">@color/yt_red</item>
+        <item name="colorPrimaryVariant">@color/yt_red_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <!-- Background and surface colors -->
+        <item name="android:colorBackground">@color/yt_black</item>
+        <item name="colorSurface">@color/yt_surface_dark</item>
+        <item name="colorOnSurface">@color/yt_text_primary</item>
+
+        <!-- Status bar and navigation bar (Android 5.0 Lollipop+) -->
+        <item name="android:statusBarColor">@color/yt_black</item>
+        <item name="android:navigationBarColor">@color/yt_black</item>
+        <item name="android:windowBackground">@color/yt_black</item>
+    </style>
+
+    <!-- Transparent Theme for Share Activity Dialog -->
+    <style name="Theme.TubePipe.Transparent" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/translucent_scrim</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/translucent_scrim</item>
+    </style>
+
+    <!-- Bottom Sheet Dialog Theme -->
+    <style name="Theme.TubePipe.BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/TubePipe.BottomSheet</item>
+    </style>
+
+    <style name="TubePipe.BottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
+    </style>
+</resources>

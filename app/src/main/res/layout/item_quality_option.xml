@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="8dp">
+
+    <ImageView
+        android:id="@+id/iv_quality_icon"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:src="@drawable/ic_video"
+        app:tint="@color/yt_blue"
+        android:contentDescription="Type" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_quality_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/yt_text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="1080p Full HD" />
+
+        <TextView
+            android:id="@+id/tv_quality_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/yt_text_secondary"
+            android:textSize="11sp"
+            tools:text="MP4 • 60 FPS • High Bitrate" />
+    </LinearLayout>
+
+    <!-- File Size Badge -->
+    <TextView
+        android:id="@+id/tv_quality_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_pill_button"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="3dp"
+        android:textColor="@color/yt_text_primary"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        tools:text="85.4 MB" />
+
+    <RadioButton
+        android:id="@+id/rb_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/yt_red"
+        android:clickable="false"
+        android:focusable="false" />
+
+</LinearLayout>

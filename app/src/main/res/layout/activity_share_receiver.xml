@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="@color/yt_surface_dark"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="12dp"
+        app:strokeColor="@color/yt_border_dark"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Header with logo and detected source -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_logo"
+                    android:contentDescription="Logo" />
+
+                <TextView
+                    android:id="@+id/tv_share_platform"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="TubePipe Downloader"
+                    android:textColor="@color/yt_text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btn_share_close"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_pause"
+                    app:tint="@color/yt_text_secondary"
+                    android:contentDescription="Close" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_shared_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="middle"
+                android:maxLines="1"
+                android:textColor="@color/yt_blue"
+                android:textSize="12sp"
+                tools:text="https://www.tiktok.com/@user/video/..." />
+
+            <!-- Extraction status -->
+            <LinearLayout
+                android:id="@+id/layout_extracting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:indeterminateTint="@color/yt_red" />
+
+                <TextView
+                    android:id="@+id/tv_extraction_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/extracting_video_info"
+                    android:textColor="@color/yt_text_secondary"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Video Info Preview (Visible once extracted) -->
+            <LinearLayout
+                android:id="@+id/layout_extracted_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_share_thumb"
+                        android:layout_width="96dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/bg_thumbnail_placeholder"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Preview" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_share_video_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:textColor="@color/yt_text_primary"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            tools:text="Extracted Video Title" />
+
+                        <TextView
+                            android:id="@+id/tv_share_author"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textColor="@color/yt_text_secondary"
+                            android:textSize="11sp"
+                            tools:text="Author / Uploader" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/select_quality"
+                    android:textColor="@color/yt_text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <!-- Quality selector list -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_share_qualities"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:maxHeight="180dp" />
+
+                <!-- Buttons: Stream in App or Download Now -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_stream_now"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Stream in App"
+                        android:textColor="@color/yt_blue"
+                        app:strokeColor="@color/yt_blue" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_share_download"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:backgroundTint="@color/yt_red"
+                        android:text="@string/download"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TubePipe</string>
+    <string name="share_download_title">Download with TubePipe (yt-dlp)</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_downloads">Downloads</string>
+    
+    <!-- Player -->
+    <string name="download_button">Download</string>
+    <string name="share_button">Share</string>
+    <string name="subscribe_button">Subscribe</string>
+    <string name="subscribed_button">Subscribed</string>
+    <string name="views_format">%s views</string>
+    <string name="select_quality">Select Download Quality</string>
+    <string name="video_streams">Video Streams</string>
+    <string name="audio_streams">Audio Streams (MP3/M4A)</string>
+    <string name="downloading">Downloading…</string>
+    <string name="download_completed">Download completed!</string>
+    <string name="download_failed">Download failed</string>
+    <string name="download_started">Download queued in background</string>
+    <string name="search_hint">Search YouTube…</string>
+    <string name="no_downloads">No downloads yet. Share any video from YouTube, TikTok, FB, or Instagram to download!</string>
+    <string name="extracting_video_info">Extracting media info with yt-dlp &amp; NewPipe…</string>
+    <string name="storage_permission_required">Storage permission is required to save downloads.</string>
+    <string name="cancel">Cancel</string>
+    <string name="download">Download</string>
+    <string name="retry">Retry</string>
+    <string name="play_offline">Play Offline</string>
+    <string name="delete">Delete</string>
+</resources>

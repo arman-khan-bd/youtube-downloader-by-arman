@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- YouTube Brand Colors -->
+    <color name="yt_red">#FF0000</color>
+    <color name="yt_red_dark">#CC0000</color>
+    <color name="yt_black">#0F0F0F</color>
+    <color name="yt_surface_dark">#212121</color>
+    <color name="yt_card_dark">#181818</color>
+    <color name="yt_chip_dark">#272727</color>
+    <color name="yt_border_dark">#303030</color>
+    <color name="yt_text_primary">#F1F1F1</color>
+    <color name="yt_text_secondary">#AAAAAA</color>
+    <color name="yt_blue">#3EA6FF</color>
+    <color name="yt_green">#2BA640</color>
+
+    <!-- Base -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="translucent_scrim">#99000000</color>
+</resources>

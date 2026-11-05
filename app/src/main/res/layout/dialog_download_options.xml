@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Top handle bar -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/bg_badge" />
+
+    <!-- Video Header Preview -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_dialog_thumb"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_thumbnail_placeholder"
+            android:scaleType="centerCrop"
+            android:contentDescription="Thumbnail" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_dialog_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/yt_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Video title showing here" />
+
+            <TextView
+                android:id="@+id/tv_dialog_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/yt_text_secondary"
+                android:textSize="11sp"
+                tools:text="Channel Name • 14:20" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Separate Video vs Audio Quality Tabs -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_download_type"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/transparent"
+        app:tabIndicatorColor="@color/yt_red"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="fixed"
+        app:tabRippleColor="@color/transparent"
+        app:tabSelectedTextColor="@color/yt_text_primary"
+        app:tabTextColor="@color/yt_text_secondary">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_video"
+            android:text="Video Quality" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_audio"
+            android:text="Audio Quality" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <!-- Loading spinner while fetching formats -->
+    <ProgressBar
+        android:id="@+id/dialog_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="24dp"
+        android:indeterminateTint="@color/yt_red" />
+
+    <!-- Quality options list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_qualities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:maxHeight="240dp" />
+
+    <!-- Storage destination info -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="4dp">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_download"
+            app:tint="@color/yt_text_secondary"
+            android:contentDescription="Storage" />
+
+        <TextView
+            android:id="@+id/tv_dialog_storage_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/yt_text_secondary"
+            android:textSize="11sp"
+            tools:text="Saving to: Phone Storage (/Download/TubePipe) • 32.5 GB Free" />
+    </LinearLayout>
+
+    <!-- Action buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_dialog_cancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textColor="@color/yt_text_secondary" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_dialog_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/yt_red"
+            android:text="@string/download"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</LinearLayout>
