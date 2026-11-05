@@ -37,6 +37,118 @@
             app:layout_constraintEnd_toEndOf="@id/player_view"
             app:layout_constraintStart_toStartOf="@id/player_view"
             app:layout_constraintTop_toTopOf="@id/player_view" />
+
+        <!-- Double Tap Rewind Overlay (Left Side) -->
+        <LinearLayout
+            android:id="@+id/layout_rewind_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pill_button"
+            android:backgroundTint="#99000000"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/player_view"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_center"
+            app:layout_constraintStart_toStartOf="@id/player_view"
+            app:layout_constraintTop_toTopOf="@id/player_view">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_replay_10"
+                app:tint="@color/white"
+                android:contentDescription="Rewind" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="-10 seconds"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Center Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <!-- Double Tap Forward Overlay (Right Side) -->
+        <LinearLayout
+            android:id="@+id/layout_forward_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pill_button"
+            android:backgroundTint="#99000000"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/player_view"
+            app:layout_constraintEnd_toEndOf="@id/player_view"
+            app:layout_constraintStart_toEndOf="@+id/guideline_center"
+            app:layout_constraintTop_toTopOf="@id/player_view">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_forward_10"
+                app:tint="@color/white"
+                android:contentDescription="Fast Forward" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="+10 seconds"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Brightness / Volume Gesture Indicator (Center) -->
+        <LinearLayout
+            android:id="@+id/layout_gesture_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pill_button"
+            android:backgroundTint="#B3000000"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/player_view"
+            app:layout_constraintEnd_toEndOf="@id/player_view"
+            app:layout_constraintStart_toStartOf="@id/player_view"
+            app:layout_constraintTop_toTopOf="@id/player_view">
+
+            <ImageView
+                android:id="@+id/iv_gesture_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_volume"
+                app:tint="@color/white"
+                android:contentDescription="Gesture Icon" />
+
+            <TextView
+                android:id="@+id/tv_gesture_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="Volume: 65%" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Scrollable Video Info and Related Videos -->

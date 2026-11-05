@@ -112,6 +112,25 @@ public class DownloadDialog extends BottomSheetDialogFragment {
             }
         }
 
+        View layoutStorage = view.findViewById(R.id.layout_dialog_storage_selector);
+        TextView btnChangeStorage = view.findViewById(R.id.btn_change_storage);
+        View.OnClickListener toggleStorageListener = v -> {
+            if (getContext() == null) return;
+            SettingsManager sm = SettingsManager.getInstance(getContext());
+            if (sm.getStorageLocation() == SettingsManager.StorageLocation.INTERNAL) {
+                sm.setStorageLocation(SettingsManager.StorageLocation.SD_CARD);
+            } else {
+                sm.setStorageLocation(SettingsManager.StorageLocation.INTERNAL);
+            }
+            displayStorageInfo();
+        };
+        if (layoutStorage != null) {
+            layoutStorage.setOnClickListener(toggleStorageListener);
+        }
+        if (btnChangeStorage != null) {
+            btnChangeStorage.setOnClickListener(toggleStorageListener);
+        }
+
         displayStorageInfo();
 
         recyclerQualities.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -145,14 +164,19 @@ public class DownloadDialog extends BottomSheetDialogFragment {
     }
 
     private void displayStorageInfo() {
-        if (getContext() == null) return;
+        if (getContext() == null || getView() == null) return;
         SettingsManager sm = SettingsManager.getInstance(getContext());
         File targetDir = sm.getEffectiveDownloadDirectory();
         boolean isSd = sm.getStorageLocation() == SettingsManager.StorageLocation.SD_CARD;
         long free = isSd ? sm.getSdCardFreeSpaceBytes() : sm.getInternalFreeSpaceBytes();
 
-        String label = (isSd ? "SD Card" : "Phone Storage") + " (" + targetDir.getName() + ") • " + AppUtils.formatFileSize(free) + " free";
+        String label = (isSd ? "SD Card" : "Phone Storage") + " • " + AppUtils.formatFileSize(free) + " free";
         tvStorageInfo.setText("Saving to: " + label);
+
+        TextView btnChange = getView().findViewById(R.id.btn_change_storage);
+        if (btnChange != null) {
+            btnChange.setText(isSd ? "Switch to Phone" : "Switch to SD Card");
+        }
     }
 
     private void loadStreams() {

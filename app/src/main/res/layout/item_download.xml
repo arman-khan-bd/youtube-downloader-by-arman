@@ -61,12 +61,13 @@
 
             <ImageButton
                 android:id="@+id/btn_action_delete"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_pause"
-                app:tint="@color/yt_text_secondary"
-                android:contentDescription="Cancel or Delete" />
+                android:src="@drawable/ic_delete"
+                app:tint="@color/yt_red"
+                android:padding="6dp"
+                android:contentDescription="Delete Download" />
         </LinearLayout>
 
         <!-- Progress bar for running download -->

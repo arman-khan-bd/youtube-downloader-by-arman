@@ -194,15 +194,29 @@ public class YtDlpDownloader {
             File outputFile = new File(appDir, cleanTitle + "." + ext);
             item.setTargetFilePath(outputFile.getAbsolutePath());
 
-            // Check if we should use yt-dlp or direct HTTP stream
-            if (isInitialized && (item.getStreamUrl() == null || item.getStreamUrl().isEmpty() || !item.getStreamUrl().startsWith("http"))) {
+            // Use yt-dlp to download media with full video+audio merging or pure audio extraction
+            if (isInitialized) {
                 try {
                     YoutubeDLRequest request = new YoutubeDLRequest(item.getSourceUrl());
                     if (item.isAudioOnly()) {
                         request.addOption("-x");
                         request.addOption("--audio-format", "mp3");
-                    } else if (item.getQualityLabel() != null && !item.getQualityLabel().isEmpty()) {
-                        request.addOption("-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best");
+                    } else {
+                        // Extract requested height, e.g. "1080p" -> 1080
+                        String quality = item.getQualityLabel();
+                        String height = null;
+                        if (quality != null) {
+                            if (quality.contains("1080")) height = "1080";
+                            else if (quality.contains("720")) height = "720";
+                            else if (quality.contains("480")) height = "480";
+                            else if (quality.contains("360")) height = "360";
+                        }
+                        if (height != null) {
+                            request.addOption("-f", "bestvideo[height<=" + height + "][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<=" + height + "]+bestaudio/best[height<=" + height + "]/best");
+                        } else {
+                            request.addOption("-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best");
+                        }
+                        request.addOption("--merge-output-format", "mp4");
                     }
                     request.addOption("-o", outputFile.getAbsolutePath());
 

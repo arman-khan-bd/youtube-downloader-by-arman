@@ -56,16 +56,37 @@ public class NewPipeDownloader extends Downloader {
                     ? request.headers().get("Content-Type").get(0)
                     : "application/json";
             body = RequestBody.create(dataToSend, MediaType.parse(contentType));
+        } else if ("POST".equalsIgnoreCase(httpMethod) || "PUT".equalsIgnoreCase(httpMethod)) {
+            body = RequestBody.create(new byte[0], null);
         }
 
         Headers.Builder okHeadersBuilder = new Headers.Builder();
-        okHeadersBuilder.add("User-Agent", USER_AGENT);
 
         if (headers != null) {
             for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
                 for (String value : entry.getValue()) {
                     okHeadersBuilder.add(entry.getKey(), value);
                 }
+            }
+        }
+
+        if (okHeadersBuilder.get("User-Agent") == null) {
+            okHeadersBuilder.add("User-Agent", USER_AGENT);
+        }
+
+        if (url != null && url.contains("youtube.com")) {
+            String existingCookie = okHeadersBuilder.get("Cookie");
+            String bdCookie = "PREF=hl=en&gl=BD; SOCS=CAESEwgDEgk0ODE3Nzk3MjQaAmVuIAEaBgiA_LyaBg";
+            if (existingCookie == null || existingCookie.isEmpty()) {
+                okHeadersBuilder.add("Cookie", bdCookie);
+            } else if (!existingCookie.contains("gl=")) {
+                okHeadersBuilder.set("Cookie", existingCookie + "; " + bdCookie);
+            }
+            if (okHeadersBuilder.get("Accept-Language") == null) {
+                okHeadersBuilder.add("Accept-Language", "en-US,en;q=0.9,bn-BD;q=0.8,bn;q=0.7");
+            }
+            if (okHeadersBuilder.get("Referer") == null) {
+                okHeadersBuilder.add("Referer", "https://www.youtube.com/");
             }
         }
 

@@ -103,7 +103,7 @@ jobs:
           elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
             TAG="${{ github.ref_name }}"
           else
-            TAG="v1.0.0"
+            TAG="v1.0.1"
           fi
           
           OUTPUT_APK="app/build/outputs/apk/release/TubePipe-${TAG}.apk"

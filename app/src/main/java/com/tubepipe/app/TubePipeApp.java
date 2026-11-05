@@ -8,6 +8,8 @@ import com.tubepipe.app.data.extractor.NewPipeDownloader;
 import com.tubepipe.app.data.extractor.YtDlpDownloader;
 
 import org.schabi.newpipe.extractor.NewPipe;
+import org.schabi.newpipe.extractor.localization.ContentCountry;
+import org.schabi.newpipe.extractor.localization.Localization;
 
 /**
  * Global Application class for TubePipe.
@@ -21,10 +23,14 @@ public class TubePipeApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // 1. Initialize NewPipeExtractor with our custom OkHttp Downloader
+        // 1. Initialize NewPipeExtractor with our custom OkHttp Downloader set to Bangladesh (BD) region
         try {
-            NewPipe.init(new NewPipeDownloader());
-            Log.d(TAG, "NewPipeExtractor initialized successfully");
+            NewPipe.init(
+                    new NewPipeDownloader(),
+                    new Localization("en", "BD"),
+                    new ContentCountry("BD")
+            );
+            Log.d(TAG, "NewPipeExtractor initialized for Bangladesh (BD) region");
         } catch (Throwable t) {
             Log.e(TAG, "Failed to initialize NewPipeExtractor", t);
         }

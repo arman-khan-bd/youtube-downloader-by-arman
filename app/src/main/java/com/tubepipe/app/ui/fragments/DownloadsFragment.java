@@ -175,15 +175,24 @@ public class DownloadsFragment extends Fragment implements DownloadAdapter.OnDow
 
     @Override
     public void onDeleteDownload(DownloadItem item) {
-        if (getContext() != null) {
-            if (item.getTargetFilePath() != null) {
-                File file = new File(item.getTargetFilePath());
-                if (file.exists()) {
-                    file.delete();
-                }
-            }
-            DownloadManager.getInstance(requireContext()).removeDownload(item);
-        }
+        if (getContext() == null) return;
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Delete Permanently?")
+                .setMessage("Do you want to permanently delete \"" + item.getTitle() + "\" from storage?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    if (item.getTargetFilePath() != null) {
+                        File file = new File(item.getTargetFilePath());
+                        if (file.exists()) {
+                            file.delete();
+                            android.media.MediaScannerConnection.scanFile(requireContext(), new String[]{file.getAbsolutePath()}, null, null);
+                        }
+                    }
+                    DownloadManager.getInstance(requireContext()).removeDownload(item);
+                    loadDownloads();
+                    Toast.makeText(getContext(), "Deleted permanently", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     @Override

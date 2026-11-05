@@ -63,33 +63,57 @@ public class VideoExtractorService {
 
     /**
      * Loads YouTube Trending/Home feed using NewPipeExtractor with pagination.
+     * Defaults to Bangladesh-based trending content with fallback search.
      */
     public void getTrendingVideos(Page page, PaginatedCallback callback) {
         executor.execute(() -> {
             try {
-                String kioskId = ServiceList.YouTube.getKioskList().getDefaultKioskId();
                 List<VideoItem> videoList = new ArrayList<>();
                 Page nextPage = null;
                 boolean hasMore = false;
 
                 if (page == null) {
-                    KioskInfo kioskInfo = KioskInfo.getInfo(ServiceList.YouTube, kioskId);
-                    for (InfoItem item : kioskInfo.getRelatedItems()) {
-                        if (item instanceof StreamInfoItem) {
-                            StreamInfoItem s = (StreamInfoItem) item;
-                            videoList.add(new VideoItem(
-                                    s.getUrl(), s.getName(), s.getUrl(),
-                                    s.getUploaderName(), getAvatarUrl(s.getUploaderAvatars()),
-                                    getImageUrl(s.getThumbnails()), s.getDuration(),
-                                    s.getViewCount(), s.getTextualUploadDate()
-                            ));
+                    try {
+                        String kioskId = ServiceList.YouTube.getKioskList().getDefaultKioskId();
+                        KioskInfo kioskInfo = KioskInfo.getInfo(ServiceList.YouTube, kioskId);
+                        for (InfoItem item : kioskInfo.getRelatedItems()) {
+                            if (item instanceof StreamInfoItem) {
+                                StreamInfoItem s = (StreamInfoItem) item;
+                                videoList.add(new VideoItem(
+                                        s.getUrl(), s.getName(), s.getUrl(),
+                                        s.getUploaderName(), getAvatarUrl(s.getUploaderAvatars()),
+                                        getImageUrl(s.getThumbnails()), s.getDuration(),
+                                        s.getViewCount(), s.getTextualUploadDate()
+                                ));
+                            }
                         }
+                        nextPage = kioskInfo.getNextPage();
+                        hasMore = kioskInfo.hasNextPage() && nextPage != null;
+                    } catch (Throwable t) {
+                        Log.w(TAG, "Default kiosk failed, falling back to Bangladesh trending search: " + t.getMessage());
                     }
-                    nextPage = kioskInfo.getNextPage();
-                    hasMore = kioskInfo.hasNextPage() && nextPage != null;
+
+                    // Fallback to Bangladesh trending search if kiosk returns empty or fails
+                    if (videoList.isEmpty()) {
+                        SearchQueryHandler qh = ServiceList.YouTube.getSearchQHFactory().fromQuery("trending bangladesh");
+                        SearchInfo searchInfo = SearchInfo.getInfo(ServiceList.YouTube, qh);
+                        for (InfoItem item : searchInfo.getRelatedItems()) {
+                            if (item instanceof StreamInfoItem) {
+                                StreamInfoItem s = (StreamInfoItem) item;
+                                videoList.add(new VideoItem(
+                                        s.getUrl(), s.getName(), s.getUrl(),
+                                        s.getUploaderName(), getAvatarUrl(s.getUploaderAvatars()),
+                                        getImageUrl(s.getThumbnails()), s.getDuration(),
+                                        s.getViewCount(), s.getTextualUploadDate()
+                                ));
+                            }
+                        }
+                        nextPage = searchInfo.getNextPage();
+                        hasMore = searchInfo.hasNextPage() && nextPage != null;
+                    }
                 } else {
                     ListExtractor.InfoItemsPage<?> moreItems =
-                            KioskInfo.getMoreItems(ServiceList.YouTube, kioskId, page);
+                            KioskInfo.getMoreItems(ServiceList.YouTube, ServiceList.YouTube.getKioskList().getDefaultKioskId(), page);
                     for (Object obj : moreItems.getItems()) {
                         if (obj instanceof StreamInfoItem) {
                             StreamInfoItem s = (StreamInfoItem) obj;
@@ -131,11 +155,37 @@ public class VideoExtractorService {
 
     /**
      * Searches YouTube for videos using NewPipeExtractor with pagination.
+     * Supports direct video URL pasting and clean query handling.
      */
     public void searchYouTube(String query, Page page, PaginatedCallback callback) {
         executor.execute(() -> {
             try {
-                SearchQueryHandler qh = ServiceList.YouTube.getSearchQHFactory().fromQuery(query);
+                if (query == null || query.trim().isEmpty()) {
+                    mainHandler.post(() -> callback.onSuccess(new ArrayList<>(), null, false));
+                    return;
+                }
+
+                String cleanQuery = query.trim();
+
+                // If user pasted a direct video link, extract directly and return
+                if (cleanQuery.contains("youtube.com/watch") || cleanQuery.contains("youtu.be/")) {
+                    try {
+                        StreamInfo streamInfo = StreamInfo.getInfo(ServiceList.YouTube, cleanQuery);
+                        List<VideoItem> singleList = new ArrayList<>();
+                        singleList.add(new VideoItem(
+                                streamInfo.getUrl(), streamInfo.getName(), streamInfo.getUrl(),
+                                streamInfo.getUploaderName(), getAvatarUrl(streamInfo.getUploaderAvatars()),
+                                getImageUrl(streamInfo.getThumbnails()), streamInfo.getDuration(),
+                                streamInfo.getViewCount(), streamInfo.getTextualUploadDate()
+                        ));
+                        mainHandler.post(() -> callback.onSuccess(singleList, null, false));
+                        return;
+                    } catch (Throwable ignored) {
+                        // fallback to standard search
+                    }
+                }
+
+                SearchQueryHandler qh = ServiceList.YouTube.getSearchQHFactory().fromQuery(cleanQuery);
                 List<VideoItem> results = new ArrayList<>();
                 Page nextPage = null;
                 boolean hasMore = false;

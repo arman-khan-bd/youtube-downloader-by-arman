@@ -5,6 +5,25 @@
     android:layout_height="match_parent"
     android:background="#60000000">
 
+    <!-- Top Bar with Minimize to Mini Player Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageButton
+            android:id="@+id/btn_player_minimize"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            android:rotation="-90"
+            app:tint="@color/white"
+            android:contentDescription="Minimize Player" />
+    </LinearLayout>
+
     <!-- Center Play/Pause & Rewind/Forward Controls -->
     <LinearLayout
         android:layout_width="wrap_content"

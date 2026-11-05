@@ -106,33 +106,49 @@
         android:layout_marginTop="8dp"
         android:maxHeight="240dp" />
 
-    <!-- Storage destination info -->
+    <!-- Interactive Storage Destination Selector -->
     <LinearLayout
+        android:id="@+id/layout_dialog_storage_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@drawable/bg_pill_button"
+        android:backgroundTint="@color/yt_surface_dark"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="4dp">
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="8dp">
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:src="@drawable/ic_download"
-            app:tint="@color/yt_text_secondary"
-            android:contentDescription="Storage" />
+            app:tint="@color/yt_blue"
+            android:contentDescription="Storage Location" />
 
         <TextView
             android:id="@+id/tv_dialog_storage_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/yt_text_secondary"
-            android:textSize="11sp"
-            tools:text="Saving to: Phone Storage (/Download/TubePipe) • 32.5 GB Free" />
+            android:textColor="@color/yt_text_primary"
+            android:textSize="12sp"
+            tools:text="Saving to: Phone Storage • 32.5 GB Free" />
+
+        <TextView
+            android:id="@+id/btn_change_storage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/yt_blue"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:text="Change" />
     </LinearLayout>
 
     <!-- Action buttons -->
