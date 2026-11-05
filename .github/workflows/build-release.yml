@@ -55,13 +55,22 @@ jobs:
           chmod +x gradlew
 
       - name: Decode Release Keystore (Optional)
-        if: "${{ secrets.KEYSTORE_BASE64 != '' }}"
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/release.keystore
-          echo "KEYSTORE_FILE=app/release.keystore" >> $GITHUB_ENV
-          echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
-          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
-          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > app/release.keystore
+            echo "KEYSTORE_FILE=app/release.keystore" >> $GITHUB_ENV
+            echo "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> $GITHUB_ENV
+            echo "KEY_ALIAS=$KEY_ALIAS" >> $GITHUB_ENV
+            echo "KEY_PASSWORD=$KEY_PASSWORD" >> $GITHUB_ENV
+            echo "Release keystore decoded successfully."
+          else
+            echo "No custom release keystore provided. Using fallback signing."
+          fi
 
       - name: Build Release APK
         run: ./gradlew assembleRelease --stacktrace
@@ -76,7 +85,7 @@ jobs:
           fi
           
           # Create standardized output name
-          VERSION_TAG="${{ github.event.inputs.release_tag || github.ref_name || 'v1.0.0' }}"
+          VERSION_TAG="${{ inputs.release_tag || github.event.inputs.release_tag || github.ref_name || 'v1.0.0' }}"
           OUTPUT_APK="app/build/outputs/apk/release/TubePipe-${VERSION_TAG}.apk"
           cp "$APK_PATH" "$OUTPUT_APK"
           
@@ -94,11 +103,11 @@ jobs:
         if: >
           startsWith(github.ref, 'refs/tags/v') ||
           github.event_name == 'release' ||
-          (github.event_name == 'workflow_dispatch' && github.event.inputs.publish_release == 'true')
+          (github.event_name == 'workflow_dispatch' && (inputs.publish_release == true || github.event.inputs.publish_release == 'true'))
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.event.inputs.release_tag || github.ref_name }}
-          name: "TubePipe Release ${{ github.event.inputs.release_tag || github.ref_name }}"
+          tag_name: ${{ inputs.release_tag || github.event.inputs.release_tag || github.ref_name }}
+          name: "TubePipe Release ${{ inputs.release_tag || github.event.inputs.release_tag || github.ref_name }}"
           draft: false
           prerelease: false
           generate_release_notes: true
