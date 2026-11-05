@@ -97,13 +97,21 @@ jobs:
             exit 1
           fi
           
-          # Create standardized output name
-          VERSION_TAG="${{ inputs.release_tag || github.event.inputs.release_tag || github.ref_name || 'v1.0.0' }}"
-          OUTPUT_APK="app/build/outputs/apk/release/TubePipe-${VERSION_TAG}.apk"
+          # Determine release tag name
+          if [ -n "${{ inputs.release_tag }}" ]; then
+            TAG="${{ inputs.release_tag }}"
+          elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            TAG="${{ github.ref_name }}"
+          else
+            TAG="v1.0.0"
+          fi
+          
+          OUTPUT_APK="app/build/outputs/apk/release/TubePipe-${TAG}.apk"
           cp "$APK_PATH" "$OUTPUT_APK"
           
           echo "apk_path=$OUTPUT_APK" >> $GITHUB_OUTPUT
-          echo "Found APK at: $OUTPUT_APK"
+          echo "release_tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Found APK at: $OUTPUT_APK with tag: $TAG"
 
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
@@ -113,14 +121,10 @@ jobs:
           retention-days: 14
 
       - name: Publish APK to GitHub Release
-        if: >
-          startsWith(github.ref, 'refs/tags/v') ||
-          github.event_name == 'release' ||
-          (github.event_name == 'workflow_dispatch' && (inputs.publish_release == true || github.event.inputs.publish_release == 'true'))
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ inputs.release_tag || github.event.inputs.release_tag || github.ref_name }}
-          name: "TubePipe Release ${{ inputs.release_tag || github.event.inputs.release_tag || github.ref_name }}"
+          tag_name: ${{ steps.prepare_apk.outputs.release_tag }}
+          name: "TubePipe Release ${{ steps.prepare_apk.outputs.release_tag }}"
           draft: false
           prerelease: false
           generate_release_notes: true
