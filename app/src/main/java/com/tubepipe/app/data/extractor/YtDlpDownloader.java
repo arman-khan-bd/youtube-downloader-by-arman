@@ -206,10 +206,8 @@ public class YtDlpDownloader {
                     }
                     request.addOption("-o", outputFile.getAbsolutePath());
 
-                    YoutubeDL.getInstance().execute(request, (progress, etaInSeconds) -> {
-                        String speed = etaInSeconds > 0 ? "ETA: " + etaInSeconds + "s" : "";
-                        mainHandler.post(() -> callback.onProgress((int) progress, speed));
-                    });
+                    mainHandler.post(() -> callback.onProgress(15, "Downloading media..."));
+                    YoutubeDL.getInstance().execute(request);
 
                     mainHandler.post(() -> callback.onCompleted(outputFile.getAbsolutePath()));
                     return;
