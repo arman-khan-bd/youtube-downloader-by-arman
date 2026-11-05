@@ -60,40 +60,49 @@
         <activity
             android:name=".ui.share.ShareReceiverActivity"
             android:exported="true"
+            android:label="@string/share_download_title"
             android:theme="@style/Theme.TubePipe.Transparent"
             android:excludeFromRecents="true">
 
             <!-- Handle "Share" from other apps (TikTok, Facebook, Instagram, YouTube, etc.) -->
-            <intent-filter android:label="@string/share_download_title">
+            <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
 
-            <!-- Handle Direct Link Clicks (VIEW intent) -->
+            <!-- YouTube Links -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-                <!-- YouTube -->
-                <data android:host="youtube.com" />
-                <data android:host="www.youtube.com" />
-                <data android:host="m.youtube.com" />
-                <data android:host="youtu.be" />
-                <!-- TikTok -->
-                <data android:host="tiktok.com" />
-                <data android:host="www.tiktok.com" />
-                <data android:host="vm.tiktok.com" />
-                <data android:host="vt.tiktok.com" />
-                <!-- Facebook -->
-                <data android:host="facebook.com" />
-                <data android:host="www.facebook.com" />
-                <data android:host="fb.watch" />
-                <!-- Instagram -->
-                <data android:host="instagram.com" />
-                <data android:host="www.instagram.com" />
+                <data android:scheme="https" android:host="www.youtube.com" />
+                <data android:scheme="https" android:host="youtube.com" />
+                <data android:scheme="https" android:host="m.youtube.com" />
+                <data android:scheme="https" android:host="youtu.be" />
+            </intent-filter>
+
+            <!-- TikTok Links -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="www.tiktok.com" />
+                <data android:scheme="https" android:host="tiktok.com" />
+                <data android:scheme="https" android:host="vm.tiktok.com" />
+                <data android:scheme="https" android:host="vt.tiktok.com" />
+            </intent-filter>
+
+            <!-- Facebook & Instagram Links -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="www.facebook.com" />
+                <data android:scheme="https" android:host="facebook.com" />
+                <data android:scheme="https" android:host="fb.watch" />
+                <data android:scheme="https" android:host="www.instagram.com" />
+                <data android:scheme="https" android:host="instagram.com" />
             </intent-filter>
         </activity>
 
