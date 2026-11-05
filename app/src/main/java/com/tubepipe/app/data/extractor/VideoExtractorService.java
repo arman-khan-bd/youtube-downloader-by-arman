@@ -9,6 +9,7 @@ import com.tubepipe.app.data.model.VideoDetail;
 import com.tubepipe.app.data.model.VideoItem;
 import com.tubepipe.app.util.AppUtils;
 
+import org.schabi.newpipe.extractor.Image;
 import org.schabi.newpipe.extractor.InfoItem;
 import org.schabi.newpipe.extractor.ListExtractor;
 import org.schabi.newpipe.extractor.Page;
@@ -78,8 +79,8 @@ public class VideoExtractorService {
                             StreamInfoItem s = (StreamInfoItem) item;
                             videoList.add(new VideoItem(
                                     s.getUrl(), s.getName(), s.getUrl(),
-                                    s.getUploaderName(), s.getUploaderAvatarUrl(),
-                                    s.getThumbnailUrl(), s.getDuration(),
+                                    s.getUploaderName(), getAvatarUrl(s.getUploaderAvatars()),
+                                    getImageUrl(s.getThumbnails()), s.getDuration(),
                                     s.getViewCount(), s.getTextualUploadDate()
                             ));
                         }
@@ -87,15 +88,15 @@ public class VideoExtractorService {
                     nextPage = kioskInfo.getNextPage();
                     hasMore = kioskInfo.hasNextPage() && nextPage != null;
                 } else {
-                    ListExtractor.InfoItemsPage<InfoItem> moreItems =
+                    ListExtractor.InfoItemsPage<?> moreItems =
                             KioskInfo.getMoreItems(ServiceList.YouTube, kioskId, page);
-                    for (InfoItem item : moreItems.getItems()) {
-                        if (item instanceof StreamInfoItem) {
-                            StreamInfoItem s = (StreamInfoItem) item;
+                    for (Object obj : moreItems.getItems()) {
+                        if (obj instanceof StreamInfoItem) {
+                            StreamInfoItem s = (StreamInfoItem) obj;
                             videoList.add(new VideoItem(
                                     s.getUrl(), s.getName(), s.getUrl(),
-                                    s.getUploaderName(), s.getUploaderAvatarUrl(),
-                                    s.getThumbnailUrl(), s.getDuration(),
+                                    s.getUploaderName(), getAvatarUrl(s.getUploaderAvatars()),
+                                    getImageUrl(s.getThumbnails()), s.getDuration(),
                                     s.getViewCount(), s.getTextualUploadDate()
                             ));
                         }
@@ -146,8 +147,8 @@ public class VideoExtractorService {
                             StreamInfoItem s = (StreamInfoItem) item;
                             results.add(new VideoItem(
                                     s.getUrl(), s.getName(), s.getUrl(),
-                                    s.getUploaderName(), s.getUploaderAvatarUrl(),
-                                    s.getThumbnailUrl(), s.getDuration(),
+                                    s.getUploaderName(), getAvatarUrl(s.getUploaderAvatars()),
+                                    getImageUrl(s.getThumbnails()), s.getDuration(),
                                     s.getViewCount(), s.getTextualUploadDate()
                             ));
                         }
@@ -162,8 +163,8 @@ public class VideoExtractorService {
                             StreamInfoItem s = (StreamInfoItem) item;
                             results.add(new VideoItem(
                                     s.getUrl(), s.getName(), s.getUrl(),
-                                    s.getUploaderName(), s.getUploaderAvatarUrl(),
-                                    s.getThumbnailUrl(), s.getDuration(),
+                                    s.getUploaderName(), getAvatarUrl(s.getUploaderAvatars()),
+                                    getImageUrl(s.getThumbnails()), s.getDuration(),
                                     s.getViewCount(), s.getTextualUploadDate()
                             ));
                         }
@@ -214,14 +215,14 @@ public class VideoExtractorService {
                     detail.setDescription(streamInfo.getDescription() != null ? streamInfo.getDescription().getContent() : "");
                     detail.setWebUrl(streamInfo.getUrl());
                     detail.setUploaderName(streamInfo.getUploaderName());
-                    detail.setUploaderAvatarUrl(streamInfo.getUploaderAvatarUrl());
+                    detail.setUploaderAvatarUrl(getAvatarUrl(streamInfo.getUploaderAvatars()));
                     detail.setUploaderSubscriberCount(streamInfo.getUploaderSubscriberCount() != -1
                             ? AppUtils.formatViews(streamInfo.getUploaderSubscriberCount()) + " subscribers"
                             : "");
                     detail.setViewCount(streamInfo.getViewCount());
                     detail.setDurationSeconds(streamInfo.getDuration());
                     detail.setUploadDate(streamInfo.getTextualUploadDate());
-                    detail.setThumbnailUrl(streamInfo.getThumbnailUrl());
+                    detail.setThumbnailUrl(getImageUrl(streamInfo.getThumbnails()));
 
                     // Video Streams (Combined Video + Audio preferred)
                     List<StreamQuality> videoQualities = new ArrayList<>();
@@ -283,8 +284,8 @@ public class VideoExtractorService {
                                     s.getName(),
                                     s.getUrl(),
                                     s.getUploaderName(),
-                                    s.getUploaderAvatarUrl(),
-                                    s.getThumbnailUrl(),
+                                    getAvatarUrl(s.getUploaderAvatars()),
+                                    getImageUrl(s.getThumbnails()),
                                     s.getDuration(),
                                     s.getViewCount(),
                                     s.getTextualUploadDate()
@@ -346,5 +347,25 @@ public class VideoExtractorService {
                 mainHandler.post(() -> callback.onError(t));
             }
         });
+    }
+
+    private static String getImageUrl(List<Image> images) {
+        if (images != null && !images.isEmpty()) {
+            Image img = images.get(images.size() - 1);
+            if (img != null && img.getUrl() != null) {
+                return img.getUrl();
+            }
+        }
+        return "";
+    }
+
+    private static String getAvatarUrl(List<Image> images) {
+        if (images != null && !images.isEmpty()) {
+            Image img = images.get(0);
+            if (img != null && img.getUrl() != null) {
+                return img.getUrl();
+            }
+        }
+        return "";
     }
 }

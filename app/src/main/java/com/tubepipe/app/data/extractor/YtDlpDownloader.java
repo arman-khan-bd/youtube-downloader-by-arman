@@ -106,7 +106,11 @@ public class YtDlpDownloader {
                 detail.setWebUrl(url);
                 detail.setUploaderName(videoInfo.getUploader() != null ? videoInfo.getUploader() : "Unknown Creator");
                 detail.setDurationSeconds(videoInfo.getDuration());
-                detail.setViewCount(videoInfo.getViewCount());
+                if (videoInfo.getViewCount() != null) {
+                    try {
+                        detail.setViewCount(Long.parseLong(videoInfo.getViewCount()));
+                    } catch (Exception ignored) {}
+                }
                 detail.setThumbnailUrl(videoInfo.getThumbnail());
 
                 List<StreamQuality> videoQualities = new ArrayList<>();
@@ -202,7 +206,7 @@ public class YtDlpDownloader {
                     }
                     request.addOption("-o", outputFile.getAbsolutePath());
 
-                    YoutubeDL.getInstance().execute(request, (progress, etaInSeconds, line) -> {
+                    YoutubeDL.getInstance().execute(request, (progress, etaInSeconds) -> {
                         String speed = etaInSeconds > 0 ? "ETA: " + etaInSeconds + "s" : "";
                         mainHandler.post(() -> callback.onProgress((int) progress, speed));
                     });
