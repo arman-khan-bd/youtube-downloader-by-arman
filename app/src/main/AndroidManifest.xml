@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Allow Android 5.0 (API 21) compatibility for native downloader libraries -->
-    <uses-sdk tools:overrideLibrary="com.yausername.youtubedl_android, com.yausername.youtubedl_common, com.yausername.ffmpeg, com.yausername.aria2c" />
-
     <!-- Network permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

@@ -17,9 +17,9 @@ on:
         type: boolean
         default: true
       release_tag:
-        description: 'Release Tag (e.g. v1.0.0)'
+        description: 'Release Tag (e.g. v1.0.2)'
         required: false
-        default: 'v1.0.0'
+        default: 'v1.0.2'
 
 permissions:
   contents: write
@@ -103,7 +103,7 @@ jobs:
           elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
             TAG="${{ github.ref_name }}"
           else
-            TAG="v1.0.1"
+            TAG="v1.0.2"
           fi
           
           OUTPUT_APK="app/build/outputs/apk/release/TubePipe-${TAG}.apk"

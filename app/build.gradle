@@ -10,14 +10,10 @@ android {
         applicationId "com.tubepipe.app"
         minSdk 21 // Android 5.0 (Lollipop)
         targetSdk 34
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
-        }
     }
 
     signingConfigs {
@@ -83,10 +79,6 @@ dependencies {
 
     // NewPipe Extractor (YouTube & Streaming technology)
     implementation 'com.github.teamnewpipe:NewPipeExtractor:v0.24.4'
-
-    // yt-dlp Native Android Wrapper (For YT, FB, TikTok, IG, etc.)
-    implementation 'io.github.junkfood02.youtubedl-android:library:0.17.2'
-    implementation 'io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2'
 
     // ExoPlayer Media3 (Streaming & offline video playback)
     implementation 'androidx.media3:media3-exoplayer:1.2.1'
